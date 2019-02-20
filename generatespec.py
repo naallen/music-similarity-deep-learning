@@ -19,10 +19,10 @@ from scipy import signal
 from scipy.io import wavfile
 import subprocess
 import ffmpeg
-from utils import set_logger
+from utils import make_logger
 import logging
 
-set_logger('log/generatespec.log')
+logger = make_logger('log/generatespec.log')
 
 dpi = 92
 resolution = 128
@@ -46,11 +46,11 @@ def make_spectrogram(filename):
 
 files = glob.glob('tracks/**/*.mp3', recursive=True) + glob.glob('tracks/**/*.m4a', recursive=True)
 
-logging.info("Generating spectrogram data for all audio samples...")
+logger.info("Generating spectrogram data for all audio samples...")
 p = Pool(25)
 r = p.imap(make_spectrogram, files)
 # Workaround to make the progress bar work, for some reason it doesnt work properly with subprocess
 for i in tqdm(r, total=len(files)):
     pass
-logging.info("Generated spectrogram data for audio samples successfully")
+logger.info("Generated spectrogram data for audio samples successfully")
 
