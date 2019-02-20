@@ -6,3 +6,4 @@ spotify-ipynb
 __pycache__
 dataset
 params.json
+log
