@@ -15,19 +15,23 @@ def load_json(path):
     with open(path, 'r') as f:
         return json.load(f)
 
-def set_logger(log_path):
-    '''Sets a path for the logger
+def make_logger(name, log_path):
+    '''Creates a new logger with the given name and path, and returns it
     
-    Sets a path for the logger to save logfiles too. Anything logged will be printed to the console and the logfile, along with timestamps
-    Code from CS230 code examples github
+    Creates a new logger which writes to the name and path provided. Also returns the logger.
+    Partially adapted from CS230 code examples on Github
     
     Arguments:
-      path {string} -- path to the log file to save to
+        name {str} -- name of the logger
+        log_path {str} -- path of the log file to write to
+    
+    Returns:
+        logger -- the created logger
     '''
-    logger = logging.getLogger()
+    logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
 
-    # Logging to a file
+    # Logging to file
     file_handler = logging.FileHandler(log_path)
     file_handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s: %(message)s'))
     logger.addHandler(file_handler)
@@ -36,3 +40,6 @@ def set_logger(log_path):
     stream_handler = logging.StreamHandler()
     stream_handler.setFormatter(logging.Formatter('%(message)s'))
     logger.addHandler(stream_handler)
+
+    return logger
+
