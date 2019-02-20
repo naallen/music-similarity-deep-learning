@@ -1,0 +1,6 @@
+{
+	"numArtists" : 1000,
+	"numTracksPerArtist": 3,
+  "spotifyClientID": "SPOTIFY_CLIENT_ID",
+  "spotifyClientSecret": "SPOTIFY_CLIENT_SECRET"
+}

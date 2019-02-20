@@ -1,0 +1,8 @@
+.ipynb_checkpoints
+scratch
+model
+tracks
+spotify-ipynb
+__pycache__
+dataset
+params.json
