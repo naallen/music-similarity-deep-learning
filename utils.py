@@ -15,7 +15,7 @@ def load_json(path):
     with open(path, 'r') as f:
         return json.load(f)
 
-def make_logger(name, log_path):
+def make_logger(name, log_path, log_to_console=True):
     '''Creates a new logger with the given name and path, and returns it
     
     Creates a new logger which writes to the name and path provided. Also returns the logger.
@@ -37,11 +37,12 @@ def make_logger(name, log_path):
         file_handler = logging.FileHandler(log_path)
         file_handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s: %(message)s'))
         logger.addHandler(file_handler)
-
-        # Logging to console
-        stream_handler = logging.StreamHandler()
-        stream_handler.setFormatter(logging.Formatter('%(message)s'))
-        logger.addHandler(stream_handler)
+        
+        if log_to_console:
+            # Logging to console
+            stream_handler = logging.StreamHandler()
+            stream_handler.setFormatter(logging.Formatter('%(message)s'))
+            logger.addHandler(stream_handler)
 
     return logger
 
