@@ -1,8 +1,7 @@
-
 # coding: utf-8
 
 # ## Generate spectrograms for all downloaded tracks
-# 
+#
 # Find all tracks, then use ffmpeg to convert them to wav. Then, using matplotlib functions, create grayscale spectrograms and save them as .png files.
 
 # In[3]:
@@ -19,10 +18,13 @@ from scipy import signal
 from scipy.io import wavfile
 import subprocess
 import ffmpeg
+import librosa
+import librosa.display 
+import numpy as np
 from utils import make_logger
 import logging
 
-logger = make_logger('log/generatespec.log')
+logger = make_logger('generatespec', 'log/generatespec.log')
 
 dpi = 92
 resolution = 128
@@ -30,8 +32,10 @@ resolution = 128
 def make_spectrogram(filename):
     wname = mktemp('.wav')
     ffmpeg.input(filename).output(wname, ac=1).global_args('-loglevel', 'error').run()
-    sample_rate, samples = wavfile.read(wname)
+    samples, sample_rate = librosa.load(wname)
     os.unlink(wname)
+    
+    S = librosa.feature.melspectrogram(y=samples, sr=sample_rate)
 
     fig, ax = plt.subplots(frameon=False)
     fig.set_size_inches(resolution / dpi, resolution / dpi)
@@ -44,7 +48,8 @@ def make_spectrogram(filename):
     plt.close()
 
 
-files = glob.glob('tracks/**/*.mp3', recursive=True) + glob.glob('tracks/**/*.m4a', recursive=True)
+files = glob.glob(os.getcwd() + '/tracks/**/*.mp3', recursive=True) \
+    + glob.glob(os.getcwd() + '/tracks/**/*.m4a', recursive=True)
 
 logger.info("Generating spectrogram data for all audio samples...")
 p = Pool(25)
